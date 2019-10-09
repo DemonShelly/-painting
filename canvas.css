@@ -1,0 +1,59 @@
+<style>
+		#myCanvas{
+			box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); 
+		}
+		div{
+			
+			margin-top: 30px;
+			margin-left: 30px;
+
+		}
+		.basic{
+			margin-top: 40px;
+
+		}
+		body{
+			background-color: rgb(240,245,243);
+          	font-family: 'Merriweather', serif;
+          	font-weight: bold;
+          	font-size: 15px;
+		}
+		#clear{
+			width: 40px;
+			height: 27px;
+			border: 0;
+			vertical-align: bottom;
+			border-radius: 5px;
+			padding-left: 0;
+			padding-right: 0;
+			/*background-color: #f1bebf;*/
+
+
+		}
+		input[type='button']{
+			width: 30px;
+			height: 30px;
+			background-repeat: no-repeat;
+			vertical-align: bottom;
+			border-radius: 3px;
+			background-position: center;
+		}
+		#color{
+			height: 27px;
+			width: 50px;
+			vertical-align: bottom;
+			border-radius: 3px;
+			border-color: #c9c8c6 ;
+		}
+		
+		
+		#fontsize{
+
+			font-size: 15px;
+			
+		}
+
+		select{
+			margin:5px 0;
+		}
+	</style>
