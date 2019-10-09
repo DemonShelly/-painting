@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+	<title>Canvas</title>
+
+	<style type="text/css">
+		body{
+			background-color: rgb(240,245,243);
+          	font-family: 'Merriweather', serif;
+          	font-weight: bold;
+          	font-size: 15px;
+          	color:;
+		}
+		#myCanvas{
+			box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); 
+		}
+		div{
+			
+			margin-top: 30px;
+			margin-left: 30px;
+
+		}
+		.basic{
+			margin-top: 40px;
+
+		}
+		
+		#clear{
+			/*font-size: 35px;*/
+			width: 40px;
+			height: 27px;
+			border: 0;
+			vertical-align: bottom;
+			border-radius: 5px;
+			padding-left: 0;
+			padding-right: 0;
+			/*background-color: #f1bebf;*/
+
+
+		}
+		input[type='button']{
+			width: 30px;
+			height: 30px;
+			background-repeat: no-repeat;
+			vertical-align: bottom;
+			border-radius: 3px;
+			background-position: center;
+		}
+		#color{
+			height: 27px;
+			width: 50px;
+			vertical-align: bottom;
+			border-radius: 3px;
+			border-color: #c9c8c6 ;
+		}
+		
+		
+		#fontsize{
+
+			font-size: 15px;
+			
+		}
+
+		select{
+			margin:5px 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="function">
+		<div class="basic">
+		基本功能<br>
+			<input type="button" id="pencil" style="background-image: url(img/pencil.png);">
+			<input type="button" id="eraser" style="background-image: url(img/eraser.png);">
+			<input type="button" class="shape" id='rec' style="background-image: url(img/rec.png)">
+			<input type="button" class="shape" id='circle' style="background-image: url(img/circle.png)">
+			<input type="button" class="shape" id='triangle' style="background-image: url(img/tri.png)">
+			<input type="button" class='but' id='clear' value="清空" onclick="clearAll()">
+		
+		</div>
+		<div class="colorChoose">
+		選擇顏色<br>
+			<input type="color" id="color" value="#f18898">
+		</div>
+		
+		<div class="pen">
+			線條樣式<br>
+			<input type="button" class='bt' id="butt"  onclick="styleButt()" style="background-image: url(img/butt.png)">
+			<input type="button" class='bt' id="round"  onclick="styleRound()" style="background-image: url(img/round.png)">
+			<input type="button" class='bt' id="bevel"  onclick="styleBevel()" style="background-image: url(img/bevel_.png)">
+			<input type="button" class='bt' id="round2" onclick="styleRound2()" style="background-image: url(img/round_.png)">
+			<input type="button" class='bt' id="miter"  onclick="styleMiter()" style="background-image: url(img/miter.png)">
+		</div>
+		<div class="penSize">畫筆大小<br>
+		<select id='fontsize'>
+ 				<option value='1'>1px</option>
+ 				<option value='5'>5px</option>
+ 				<option value='10'>10px</option>
+ 				<option value='12'>12px</option>
+ 				<option value='15'>15px</option>
+ 				<option value='20'>20px</option>
+ 				<option value='25'>25px</option>
+ 		</select></div>
+		
+		<div class="text">
+			文字工具<br>
+ 			<select id='textSize'>
+ 				<option value='10'>10px</option>
+ 				<option value='15'>15px</option>
+ 				<option value='20'>20px</option>
+ 				<option value='25'>25px</option>
+ 				<option value='30'>30px</option>
+ 				<option value='40'>40px</option>
+ 				<option value='50'>50px</option>
+ 				<option value='65'>65px</option>
+ 				<option value='80'>80px</option>
+ 			</select>
+			
+			<select id='fontStyle'>
+ 				<option value='Merriweather'>Merriweather</option>
+ 				<option value='serif'>serif</option>
+ 				<option value='sans-serif'>sans-serif</option>
+ 				<option value='monospace'>monospace</option>
+ 				<option value='fantasy'>fantasy</option>
+ 				<option value="PMingLiU">新細明體</option>
+ 				<option value="DFKai-SB">標楷體</option>
+ 				<option value="Microsoft JhengHei">微軟正黑體</option>
+ 				<option value="STKaiti">華文楷體</option>
+ 				<option value="STHeiti">華文黑體</option>
+ 				<option value="STSong">華文宋體</option>
+ 				<option value="LiHei Pro Medium">儷黑Pro</option>
+ 			</select>
+ 			<br>
+ 			<input type="text" class='but' id="text" placeholder="輸入文字">
+ 			<input type="submit" class="but" id='textSubmit'value='新增文字' onclick="newText()">
+		</div>
+ 		
+		<div class="file">
+			新增圖片<br>
+			<input type="file" class='but' id="input">
+		</div>
+		<div class="dow">
+			另存圖片<br>
+			<a id="download" download="image.png">
+			<button type="button" onClick="download()">下載</button>
+		</a>
+		</div>
+		
+ 	</div>
+	
+	
+		<canvas id="myCanvas" width="850px" height="550px" style="background-color:white;
+			top: 40px;
+		    left: 350px;
+			position: absolute;
+		    "></canvas>
+	
+		
+
+
+
+</body>
+</html>
+
+	<script type="text/javascript">
+	
+		let canvas = document.getElementById('myCanvas');
+		let ctx = canvas.getContext('2d');
+		let mode = '';
+		let drawing,erasering,drawCircling,drawTriangling,drawRectangling = false;
+		let pencilColor='#f18898' ;
+		let pencilSize = 1;
+		let mx,my,oriX,oriY,sizeText,sizePicker,colorPicker,inputElement,
+		fontPicker,fontSizePicker;
+		let fontText= 'Merriweather';
+		let textColor = "#000000";
+		
+
+	
+		document.getElementById('pencil').onclick = function(){
+			mode='draw'
+			canvas.style.cursor="url(img/pencil.png)2.5 25,auto";
+		}
+		document.getElementById('eraser').onclick = function(){
+			mode='eraser'
+			canvas.style.cursor="url(img/eraser.png)2.5 25,auto";
+		}
+		document.getElementById('circle').onclick = function(){
+			mode='circle'
+			canvas.style.cursor="";
+		}
+		document.getElementById('triangle').onclick = function(){
+			mode='triangle'
+			canvas.style.cursor="";
+		}
+		document.getElementById('rec').onclick = function(){
+			mode='rectangle'
+			canvas.style.cursor="";
+		}
+
+		//上傳檔案
+		inputElement = document.getElementById("input");
+		
+		inputElement.addEventListener("click", handleFiles, false);
+
+			function handleFiles(ev) {
+				console.log(ev.target.files[0]);
+				var img = new Image();	
+				let file = ev.target.files[0];
+				let reader = new FileReader();
+
+				reader.addEventListener('load',function(){
+					img.src = reader.result;
+				},false);
+
+				if (file) {
+					reader.readAsDataURL(file);
+					img.addEventListener('load',function(){
+						// img.width=canvas.width;
+						ctx.drawImage(img,0,0,400,400*img.height/img.width);
+					},false);
+				}
+			  }
+		
+		
+		//另存成圖
+		
+		function download() {
+			var download = document.getElementById("download");
+			var image = document.getElementById("myCanvas").toDataURL("image/png")
+			    .replace("image/png", "image/octet-stream");//跳出另存新檔
+			download.setAttribute("href", image);
+
+			}
+
+
+		//新增文字
+			//選字型
+		 	fontPicker = document.getElementById('fontStyle');
+			fontPicker.addEventListener("change", watchFontPicker, false);
+
+			function watchFontPicker(event) {
+				fontText= event.target.value;	 
+			}
+			//選字大小
+			fontSizePicker = document.getElementById('textSize')
+			fontSizePicker.addEventListener("change", watchFontSizePicker, false);
+
+			function watchFontSizePicker(event) {
+				sizeText= event.target.value;
+				// console.log(sizeText);	 
+			}
+
+		function newText(){
+			let textContent = document.getElementById('text').value;
+		
+			ctx.font = sizeText+'px'+' '+fontText;
+			console.log(ctx.font)
+			ctx.fillStyle = textColor;
+			ctx.textBaseline = "top";
+			ctx.fillText(textContent,0,0);
+
+		}
+	
+
+		//顏色選擇
+		colorPicker = document.getElementById('color')
+		colorPicker.addEventListener("change", watchColorPicker, false);
+
+		function watchColorPicker(event) {
+			pencilColor= event.target.value;	 
+		  	console.log(event.target.value);
+		}
+
+		//畫筆粗細
+		sizePicker = document.getElementById('fontsize')
+		sizePicker.addEventListener("change", watchSizePicker, false);
+		function watchSizePicker(event) {		
+			pencilSize = event.target.value
+		  	console.log(event.target.value);
+		}
+
+		//生成形狀
+		function drawRec(x1,y1,x2,y2){
+			ctx.beginPath();
+			ctx.fillStyle=pencilColor;
+			ctx.moveTo(x1,y1);
+			ctx.lineTo(x1,y2);
+			ctx.lineTo(x2,y2);
+			ctx.lineTo(x2,y1);
+			ctx.fill();
+
+		}
+		function drawTri(x1,y1,x2,y2){
+			ctx.beginPath();
+			ctx.fillStyle=pencilColor;
+			ctx.moveTo(x1,y1);
+			ctx.lineTo(x2,y2);
+			ctx.lineTo(-(x2)+(2*x1),y2);
+			ctx.fill();
+
+		}
+		function drawCircle(x,y,r){
+			ctx.beginPath();
+			ctx.fillStyle=pencilColor;
+			ctx.arc(x,y,r,0,Math.PI*2,true);
+			ctx.fill();
+
+		}
+
+		function dist(x1,y1,x2,y2){
+			return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+		}
+
+
+
+		//畫筆選擇
+		function styleButt(){
+			ctx.lineCap='butt';
+		}
+		function styleRound(){
+			ctx.lineCap='round';
+		}
+		function styleRound2(){
+			ctx.lineJoin='round';
+		}
+		function styleMiter(){
+			ctx.lineJoin='miter';
+		}
+		function styleBevel(){
+			ctx.lineJoin='bevel';
+		}
+
+		function clearAll(){
+			console.log('clear!')
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		}
+
+		//畫畫事件
+		function draw(){
+			ctx.beginPath();
+			ctx.strokeStyle = pencilColor;
+			ctx.lineWidth = pencilSize;
+		}
+		function eraserDraw(){
+			ctx.beginPath();
+			ctx.strokeStyle = eraserColor;
+			ctx.lineWidth = pencilSize;
+		}
+
+		canvas.onmousedown = function(ev){
+			console.log('onmousedown')
+			mx = event.clientX - parseInt(canvas.style.left) + window.pageXOffset;
+			my = event.clientY - parseInt(canvas.style.top) + window.pageYOffset;
+			
+
+			if (mode=='draw') {
+				console.log('drawStart!')
+				draw();	
+			    ctx.moveTo(mx, my);
+			    drawing=true;
+			    
+			}
+			else if (mode=='eraser') {
+				eraserColor = 'white';
+				
+				eraserDraw();
+			    ctx.moveTo(mx, my);
+			    erasering=true;
+			}
+			
+			else if (mode =='circle'){
+				
+				oldImg = ctx.getImageData(0,0,canvas.width,canvas.height);
+				oriX=mx;
+				oriY=my;
+				drawCircling=true;
+			}
+			else if (mode=='triangle') {
+				
+				oldImg = ctx.getImageData(0,0,canvas.width,canvas.height);
+				oriX=mx;
+				oriY=my;
+				drawTriangling=true;
+			}
+			else if (mode=='rectangle') {
+				oldImg = ctx.getImageData(0,0,canvas.width,canvas.height);
+				oriX=mx;
+				oriY=my;
+				drawRectangling=true;
+			}
+
+		}
+
+		canvas.onmousemove = function(ev){
+			console.log('onmousemove')
+			mx = event.clientX - parseInt(canvas.style.left) + window.pageXOffset;
+		    my = event.clientY - parseInt(canvas.style.top) + window.pageYOffset;
+			if(drawing&&mode=='draw'){
+				
+		        ctx.lineTo(mx, my);
+		        ctx.stroke();
+
+   			 }
+   			 else if (erasering&&mode=='eraser') {
+   		
+		        ctx.lineTo(mx, my);
+		        ctx.stroke();
+		        
+   			 }
+   			 else if (drawCircling&&mode=='circle') {
+   			 	clearAll();
+   			 	ctx.putImageData(oldImg,0,0);
+   			 	drawCircle(oriX,oriY,dist(oriX,oriY,mx,my));
+   			 }
+   			 else if(drawTriangling&&mode=='triangle'){
+   			 	clearAll();
+   			 	ctx.putImageData(oldImg,0,0);
+   			 	drawTri(oriX,oriY,mx,my);
+   			 }
+   			 else if (drawRectangling&&mode=='rectangle') {
+   			 	clearAll();
+   			 	ctx.putImageData(oldImg,0,0);
+   			 	drawRec(oriX,oriY,mx,my);
+   			 }
+
+		}
+
+		canvas.onmouseup = function(){
+			console.log('onmouseup')
+			if (mode=='draw') {
+				drawing = false;
+			}
+			else if(mode =='eraser'){
+				erasering = false;
+			}
+			else if(mode =='circle'){
+				drawCircling=false;
+			}
+			else if (mode=='triangle') {
+				drawTriangling = false;
+			}
+			else if (mode=='rectangle') {
+				drawRectangling=false;
+			}
+			
+			
+		}
+
+
+	</script>
