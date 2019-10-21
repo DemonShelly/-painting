@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+	<title>Canvas</title>
+
+	<link rel=stylesheet type="text/css" href="canvas.css">
+
+</head>
+<body>
+	<div class="function">
+		<div class="basic">
+		基本功能<br>
+			<input type="button" id="pencil" style="background-image: url(img/pencil.png);">
+			<input type="button" id="eraser" style="background-image: url(img/eraser.png);">
+			<input type="button" class="shape" id='rec' style="background-image: url(img/rec.png)">
+			<input type="button" class="shape" id='circle' style="background-image: url(img/circle.png)">
+			<input type="button" class="shape" id='triangle' style="background-image: url(img/tri.png)">
+			<input type="button" class='but' id='clear' value="清空" onclick="clearAll()">
+		
+		</div>
+		<div class="colorChoose">
+		選擇顏色<br>
+			<input type="color" id="color" value="#f18898">
+		</div>
+		
+		<div class="pen">
+			線條樣式<br>
+			<input type="button" class='bt' id="butt"  onclick="styleButt()" style="background-image: url(img/butt.png)">
+			<input type="button" class='bt' id="round"  onclick="styleRound()" style="background-image: url(img/round.png)">
+			<input type="button" class='bt' id="bevel"  onclick="styleBevel()" style="background-image: url(img/bevel_.png)">
+			<input type="button" class='bt' id="round2" onclick="styleRound2()" style="background-image: url(img/round_.png)">
+			<input type="button" class='bt' id="miter"  onclick="styleMiter()" style="background-image: url(img/miter.png)">
+		</div>
+		<div class="penSize">畫筆大小<br>
+		<select id='fontsize'>
+ 				<option value='1'>1px</option>
+ 				<option value='5'>5px</option>
+ 				<option value='10'>10px</option>
+ 				<option value='12'>12px</option>
+ 				<option value='15'>15px</option>
+ 				<option value='20'>20px</option>
+ 				<option value='25'>25px</option>
+ 		</select></div>
+		
+		<div class="text">
+			文字工具<br>
+ 			<select id='textSize'>
+ 				<option value='10'>10px</option>
+ 				<option value='15'>15px</option>
+ 				<option value='20'>20px</option>
+ 				<option value='25'>25px</option>
+ 				<option value='30'>30px</option>
+ 				<option value='40'>40px</option>
+ 				<option value='50'>50px</option>
+ 				<option value='65'>65px</option>
+ 				<option value='80'>80px</option>
+ 			</select>
+			
+			<select id='fontStyle'>
+ 				<option value='Merriweather'>Merriweather</option>
+ 				<option value='serif'>serif</option>
+ 				<option value='sans-serif'>sans-serif</option>
+ 				<option value='monospace'>monospace</option>
+ 				<option value='fantasy'>fantasy</option>
+ 				<option value="PMingLiU">新細明體</option>
+ 				<option value="DFKai-SB">標楷體</option>
+ 				<option value="Microsoft JhengHei">微軟正黑體</option>
+ 				<option value="STKaiti">華文楷體</option>
+ 				<option value="STHeiti">華文黑體</option>
+ 				<option value="STSong">華文宋體</option>
+ 				<option value="LiHei Pro Medium">儷黑Pro</option>
+ 			</select>
+ 			<br>
+ 			<input type="text" class='but' id="text" placeholder="輸入文字">
+ 			<input type="submit" class="but" id='textSubmit'value='新增文字' onclick="newText()">
+		</div>
+ 		
+		<div class="file">
+			新增圖片<br>
+			<input type="file" class='but' id="input">
+		</div>
+		<div class="dow">
+			另存圖片<br>
+			<a id="download" download="image.png">
+			<button type="button" onClick="download()">下載</button>
+		</a>
+		</div>
+		
+ 	</div>
+	
+	
+		<canvas id="myCanvas" width="850px" height="550px" style="background-color:white;
+			top: 40px;
+		    left: 350px;
+			position: absolute;
+			box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+		    "></canvas>
+
+
+</body>
+</html>
+
+	<script type="text/javascript" src="main.js"></script>
