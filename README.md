@@ -1,6 +1,6 @@
 # painting／簡易版小畫家
 ## Demo 
-https://demonshelly.github.io/-painting/
+https://demonshelly.github.io/painting-board/
 
 ## Discription
 This is a painting board that you can draw everything you want.
